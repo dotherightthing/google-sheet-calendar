@@ -52,6 +52,7 @@ class GscCalendar {
 
     let range = rangeStart;
     let rowOffset = 0;
+    let weekDate;
     const weeks = [];
 
     for (let w = 0; w < totalWeeks; w += 1) {
@@ -60,6 +61,15 @@ class GscCalendar {
       }
 
       range = rangeStart.offset(rowOffset, 0);
+      weekDate = range.getValue(); // Returns the value of the top-left cell in the range.
+
+      // allow for extra rowsAfterWeek
+      while (!GscUtils.isDate(weekDate)) {
+        rowOffset += 1;
+        range = rangeStart.offset(rowOffset, 0);
+        weekDate = range.getValue(); // Returns the value of the top-left cell in the range.
+      }
+
       weeks.push(range.getValues());
     }
 
@@ -79,7 +89,6 @@ class GscCalendar {
 
     // console.log(weeks);
 
-    // at May 23 there is drift, where rowsAfterWeek = 3, rather than 2
     weeks.forEach((week, index) => {
       week.forEach((day) => {
         console.log(index, day);
