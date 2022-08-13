@@ -36,7 +36,7 @@ class GscSheet {
    * @summary Get a reference to spreadsheet cells containing the specified text.
    * @memberof GscSheet
    * @static
-   * @param {object} sheetName Sheet name
+   * @param {string} sheetName Sheet name
    * @param {string} cellText Cell text
    * @returns {object} Range object
    */
@@ -59,7 +59,7 @@ class GscSheet {
    * @summary Get the number of the spreadsheet column containing the specified text (to find the column headers).
    * @memberof GscSheet
    * @static
-   * @param {object} sheetName Sheet name
+   * @param {string} sheetName Sheet name
    * @param {string} cellText Cell text
    * @returns {number} columnIndex
    * @see {@link https://stackoverflow.com/a/64289303}
@@ -81,6 +81,54 @@ class GscSheet {
     }
 
     GscCache.setCacheItem(cacheKey, columnIndex);
+
+    return columnIndex;
+  }
+
+  /**
+   * getColumnIndexDate
+   *
+   * @summary Get the number of the spreadsheet column containing each week's starting date.
+   * @memberof GscSheet
+   * @static
+   * @param {string} sheetName Sheet name
+   * @returns {number} columnIndex
+   */
+  static getColumnIndexDate(sheetName) {
+    let columnIndex = -1;
+
+    // getRange(row, column, numRows, numColumns)
+    const sheet = GscSheet.getSheet(sheetName);
+    const rowIndexFirst = GscSheet.getRowIndexFirst();
+    const lastColumnIndex = sheet.getLastColumn();
+
+    const headerColumnRange = sheet.getRange(rowIndexFirst, 1, 1, lastColumnIndex);
+    let headerValues = headerColumnRange.getValues().flat();
+    headerValues = headerValues.filter((item) => (item !== ''));
+
+    headerValues.forEach((val, index) => {
+      if (GscUtils.isDate(val)) {
+        columnIndex = index + 1;
+      }
+    });
+
+    return columnIndex;
+  }
+
+  /**
+   * getColumnIndexUser
+   *
+   * @summary Get the number of the spreadsheet column containing the user's name.
+   * @memberof GscSheet
+   * @static
+   * @param {string} sheetName Sheet name
+   * @returns {number} columnIndex
+   */
+  static getColumnIndexUser(sheetName) {
+    const { user } = gscAppInstance.settings;
+    const { name: userName } = user;
+
+    const columnIndex = GscSheet.getColumnIndex(sheetName, userName);
 
     return columnIndex;
   }
@@ -117,13 +165,48 @@ class GscSheet {
   }
 
   /**
-   * getSheet
+   * getRowIndexFirst
    *
-   * @summary Get suburbs or town spreadsheet (if the user is allowed to access it).
+   * @summary Get the number of the first populated spreadsheet row (containing column headers).
    * @memberof GscSheet
    * @static
-   * @param {object} sheetName Sheet name
-   * @returns {object} sheet
+   * @param {string} sheetName Sheet name
+   * @returns {number} rowIndex
+   */
+  static getRowIndexFirst(sheetName) {
+    const { user } = gscAppInstance.settings;
+    const { name: userName } = user;
+
+    const rowIndex = GscSheet.getRowIndex(sheetName, userName) || 1;
+
+    return rowIndex;
+  }
+
+  /**
+   * getRowIndexLast
+   *
+   * @summary Get the number of the last populated spreadsheet row.
+   * @memberof GscSheet
+   * @static
+   * @param {string} sheetName Sheet name
+   * @returns {number} rowIndex
+   */
+  static getRowIndexLast(sheetName) {
+    const sheet = GscSheet.getSheet(sheetName);
+
+    const rowIndex = sheet.getLastRow();
+
+    return rowIndex;
+  }
+
+  /**
+   * getSheet
+   *
+   * @summary Get (this year's) sheet.
+   * @memberof GscSheet
+   * @static
+   * @param {string} sheetName Sheet name
+   * @returns {*} sheet
    */
   static getSheet(sheetName) {
     const { spreadsheetId } = gscAppInstance.settings;
@@ -137,5 +220,19 @@ class GscSheet {
     }
 
     return sheet;
+  }
+
+  /**
+   * getSheetName
+   *
+   * @summary Get the name of (this year's) sheet.
+   * @memberof GscSheet
+   * @static
+   * @returns {string} sheetName
+   */
+  static getSheetName() {
+    const sheetName = new Date().getFullYear();
+
+    return sheetName;
   }
 }

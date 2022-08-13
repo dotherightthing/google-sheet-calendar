@@ -29,6 +29,43 @@ class GscCalendar {
 
   /* Methods */
 
+  static getWeeks() {
+    const {
+      rowsAfterWeek,
+      rowsInWeek,
+    } = gscAppInstance.settings;
+
+    const sheetName = GscSheet.getSheetName();
+    const columnIndexDate = GscSheet.getColumnIndexDate(sheetName);
+    const columnIndexUser = GscSheet.getColumnIndexUser(sheetName);
+    const rowIndexFirst = GscSheet.getRowIndexFirst(sheetName);
+    const rowIndexLast = GscSheet.getRowIndexLast(sheetName);
+    const totalRows = (rowIndexLast - rowIndexFirst);
+
+    const rowsBeforeWeek = 1; // header row
+    const rowsPerWeek = (rowsBeforeWeek + rowsInWeek + rowsAfterWeek);
+    const totalWeeks = Math.floor(totalRows / rowsPerWeek); // possible weeks, need to verify that date exists to weed out trailing comments
+
+    const sheet = GscSheet.getSheet(sheetName);
+    // getRange(row, column, numRows, numColumns)
+    const rangeStart = sheet.getRange(rowIndexFirst, columnIndexDate, rowsPerWeek, columnIndexUser);
+
+    let range = rangeStart;
+    let rowOffset = 0;
+    const weeks = [];
+
+    for (let w = 0; w < totalWeeks; w += 1) {
+      if (w > 0) {
+        rowOffset += rowsPerWeek;
+      }
+
+      range = rangeStart.offset(rowOffset, 0);
+      weeks.push(range.getValues());
+    }
+
+    return weeks;
+  }
+
   /**
    * devApp
    *
@@ -38,29 +75,16 @@ class GscCalendar {
    * @returns {boolean} True if successful
    */
   static devApp() {
-    const { user } = gscAppInstance.settings;
-    const { name: userName } = user;
-    const sheetName = new Date().getFullYear();
+    const weeks = GscCalendar.getWeeks();
 
-    // const columnIndex = GscSheet.getColumnIndex(sheetName, userName);
-    const firstHeaderRowIndex = GscSheet.getRowIndex(sheetName, userName);
-    const sheet = GscSheet.getSheet(sheetName);
-    const lastColumnIndex = sheet.getLastColumn();
+    // console.log(weeks);
 
-    // getRange(row, column, numRows, numColumns)
-    const headerColumnRange = sheet.getRange(firstHeaderRowIndex, 1, 1, lastColumnIndex);
-    let headerValues = headerColumnRange.getValues().flat();
-    headerValues = headerValues.filter((item) => (item !== ''));
-
-    let date = null;
-
-    headerValues.forEach((val) => {
-      if (GscUtils.isDate(val)) {
-        date = val;
-      }
+    // at May 23 there is drift, where rowsAfterWeek = 3, rather than 2
+    weeks.forEach((week, index) => {
+      week.forEach((day) => {
+        console.log(index, day);
+      });
     });
-
-    console.log('first header row found');
 
     return true;
   }

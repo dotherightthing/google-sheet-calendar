@@ -135,8 +135,13 @@ devApp
     * [new GscSheet(config)](#new_GscSheet_new)
     * [.getCellByString(sheetName, cellText)](#GscSheet.getCellByString) ⇒ <code>object</code>
     * [.getColumnIndex(sheetName, cellText)](#GscSheet.getColumnIndex) ⇒ <code>number</code>
+    * [.getColumnIndexDate(sheetName)](#GscSheet.getColumnIndexDate) ⇒ <code>number</code>
+    * [.getColumnIndexUser(sheetName)](#GscSheet.getColumnIndexUser) ⇒ <code>number</code>
     * [.getRowIndex(sheetName, cellText)](#GscSheet.getRowIndex) ⇒ <code>number</code>
-    * [.getSheet(sheetName)](#GscSheet.getSheet) ⇒ <code>object</code>
+    * [.getRowIndexFirst(sheetName)](#GscSheet.getRowIndexFirst) ⇒ <code>number</code>
+    * [.getRowIndexLast(sheetName)](#GscSheet.getRowIndexLast) ⇒ <code>number</code>
+    * [.getSheet(sheetName)](#GscSheet.getSheet) ⇒ <code>\*</code>
+    * [.getSheetName()](#GscSheet.getSheetName) ⇒ <code>string</code>
 
 <a name="new_GscSheet_new"></a>
 
@@ -158,7 +163,7 @@ getCellByString
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sheetName | <code>object</code> | Sheet name |
+| sheetName | <code>string</code> | Sheet name |
 | cellText | <code>string</code> | Cell text |
 
 <a name="GscSheet.getColumnIndex"></a>
@@ -177,8 +182,34 @@ getColumnIndex
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sheetName | <code>object</code> | Sheet name |
+| sheetName | <code>string</code> | Sheet name |
 | cellText | <code>string</code> | Cell text |
+
+<a name="GscSheet.getColumnIndexDate"></a>
+
+### GscSheet.getColumnIndexDate(sheetName) ⇒ <code>number</code>
+getColumnIndexDate
+
+**Kind**: static method of [<code>GscSheet</code>](#GscSheet)  
+**Summary**: Get the number of the spreadsheet column containing each week's starting date.  
+**Returns**: <code>number</code> - columnIndex  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sheetName | <code>string</code> | Sheet name |
+
+<a name="GscSheet.getColumnIndexUser"></a>
+
+### GscSheet.getColumnIndexUser(sheetName) ⇒ <code>number</code>
+getColumnIndexUser
+
+**Kind**: static method of [<code>GscSheet</code>](#GscSheet)  
+**Summary**: Get the number of the spreadsheet column containing the user's name.  
+**Returns**: <code>number</code> - columnIndex  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sheetName | <code>string</code> | Sheet name |
 
 <a name="GscSheet.getRowIndex"></a>
 
@@ -194,19 +225,53 @@ getRowIndex
 | sheetName | <code>object</code> | Sheet name |
 | cellText | <code>string</code> | Cell text |
 
-<a name="GscSheet.getSheet"></a>
+<a name="GscSheet.getRowIndexFirst"></a>
 
-### GscSheet.getSheet(sheetName) ⇒ <code>object</code>
-getSheet
+### GscSheet.getRowIndexFirst(sheetName) ⇒ <code>number</code>
+getRowIndexFirst
 
 **Kind**: static method of [<code>GscSheet</code>](#GscSheet)  
-**Summary**: Get suburbs or town spreadsheet (if the user is allowed to access it).  
-**Returns**: <code>object</code> - sheet  
+**Summary**: Get the number of the first populated spreadsheet row (containing column headers).  
+**Returns**: <code>number</code> - rowIndex  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sheetName | <code>object</code> | Sheet name |
+| sheetName | <code>string</code> | Sheet name |
 
+<a name="GscSheet.getRowIndexLast"></a>
+
+### GscSheet.getRowIndexLast(sheetName) ⇒ <code>number</code>
+getRowIndexLast
+
+**Kind**: static method of [<code>GscSheet</code>](#GscSheet)  
+**Summary**: Get the number of the last populated spreadsheet row.  
+**Returns**: <code>number</code> - rowIndex  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sheetName | <code>string</code> | Sheet name |
+
+<a name="GscSheet.getSheet"></a>
+
+### GscSheet.getSheet(sheetName) ⇒ <code>\*</code>
+getSheet
+
+**Kind**: static method of [<code>GscSheet</code>](#GscSheet)  
+**Summary**: Get (this year's) sheet.  
+**Returns**: <code>\*</code> - sheet  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sheetName | <code>string</code> | Sheet name |
+
+<a name="GscSheet.getSheetName"></a>
+
+### GscSheet.getSheetName() ⇒ <code>string</code>
+getSheetName
+
+**Kind**: static method of [<code>GscSheet</code>](#GscSheet)  
+**Summary**: Get the name of (this year's) sheet.  
+**Returns**: <code>string</code> - sheetName  
 <a name="GscUtils"></a>
 
 ## GscUtils

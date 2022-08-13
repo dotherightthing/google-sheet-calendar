@@ -59,7 +59,8 @@ const appConfig = {
     name: 'Dan',
     email: 'dan@dotherightthing.co.nz',
   },
-  workingDaysInWeek: 5,
+  rowsAfterWeek: 2,
+  rowsInWeek: 5,
 };
 
 // share config with other classes
