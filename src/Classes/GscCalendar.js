@@ -61,6 +61,9 @@ class GscCalendar {
     let range = rangeStart;
     let rowOffset = 0;
     let weekDate;
+    let values;
+    let backgrounds;
+    let valuesAndBackgrounds;
     const weeks = [];
 
     for (let w = 0; w < totalWeeks; w += 1) {
@@ -78,8 +81,25 @@ class GscCalendar {
         weekDate = range.getValue(); // Returns the value of the top-left cell in the range.
       }
 
-      // array of weeks, each week contains an array of days
-      weeks.push(range.getValues());
+      valuesAndBackgrounds = [];
+      backgrounds = range.getBackgrounds();
+      values = range.getValues();
+
+      for (let row = 0; row < values.length; row += 1) {
+        valuesAndBackgrounds[row] = [];
+
+        for (let col = 0; col < values[row].length; col += 1) {
+          const value = values[row][col].toString();
+          const background = backgrounds[row][col];
+
+          valuesAndBackgrounds[row].push({ value, background });
+        }
+      }
+
+      // console.log('valuesAndBackgrounds', valuesAndBackgrounds);
+
+      // array of weeks, each week contains an array of days, each day contains an object
+      weeks.push(valuesAndBackgrounds);
     }
 
     return weeks;
@@ -105,25 +125,26 @@ class GscCalendar {
       const userDays = [];
 
       week.forEach((day, index) => {
-        const dateCol = day[columnIndexDate - 1];
-        const userCol = day[columnIndexUser - 1];
+        const dateValue = day[columnIndexDate - 1].value;
+        const userValueAndBackground = day[columnIndexUser - 1];
 
         // omit empty rows
-        if (day[0] === '') {
+        if (day[0].value === '') {
           return;
         }
 
         // omit trailing comments
-        if ((index === 0) && (typeof dateCol === 'object')) {
-          if (GscUtils.isDate(dateCol.toString())) {
-            const dd = dateCol.getDate().toString().padStart(2, '0');
-            const mm = (dateCol.getMonth() + 1).toString().padStart(2, '0');
-            const yyyy = dateCol.getFullYear();
+        if (index === 0) {
+          if (GscUtils.isDate(dateValue)) {
+            const date = new Date(dateValue);
+            const dd = date.getDate().toString().padStart(2, '0');
+            const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+            const yyyy = date.getFullYear();
 
             weekStartDate = `${yyyy}/${mm}/${dd}`;
           }
         } else {
-          userDays.push(userCol);
+          userDays.push(userValueAndBackground);
         }
       });
 
@@ -133,6 +154,28 @@ class GscCalendar {
     });
 
     console.log(userWeeks);
+
+    //  [
+    //    '2022/01/03': [
+    //      { value: '', background: '#f22201' },
+    //      { value: '', background: '#f22201' },
+    //      { value: '', background: '#ffffff' },
+    //      { value: '', background: '#ffffff' },
+    //      { value: '', background: '#ffffff' }
+    //    ],
+    //    '2022/01/10': [
+    //      { value: '', background: '#ffffff' },
+    //      { value: '8', background: '#00ff00' },
+    //      { value: '', background: '#ffffff' },
+    //      { value: '8', background: '#00ff00' },
+    //      { value: '', background: '#ffffff' }
+    //    ],
+    //    ...
+    //  ]
+
+    // TODO
+    // create calendar events
+    // update calendar events
 
     return true;
   }
