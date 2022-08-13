@@ -51,7 +51,7 @@ This app is built using [Google Apps Script](https://developers.google.com/apps-
 
 The web app reads from a Google Sheet. Google Apps Script offers the choice of a 'container-bound' (spreadsheet linked) or 'standalone' project.
 
-The spreadsheet is readonly ("View only"), this script is a 'standalone' project.
+As the spreadsheet is readonly ("View only"), this script is a 'standalone' project.
 
 Link to the source spreadsheet via the `spreadsheetId` key in `Main.js`
 
