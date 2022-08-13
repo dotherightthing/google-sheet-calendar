@@ -70,6 +70,7 @@ class GscCalendar {
         weekDate = range.getValue(); // Returns the value of the top-left cell in the range.
       }
 
+      // array of weeks, each week contains an array of days
       weeks.push(range.getValues());
     }
 
@@ -85,15 +86,46 @@ class GscCalendar {
    * @returns {boolean} True if successful
    */
   static devApp() {
+    const sheetName = GscSheet.getSheetName();
+    const columnIndexDate = GscSheet.getColumnIndexDate(sheetName);
+    const columnIndexUser = GscSheet.getColumnIndexUser(sheetName);
+
     const weeks = GscCalendar.getWeeks();
+    const userWeeks = [];
 
-    // console.log(weeks);
+    weeks.forEach((week) => {
+      let weekStartDate = null;
+      const userDays = [];
 
-    weeks.forEach((week, index) => {
-      week.forEach((day) => {
-        console.log(index, day);
+      week.forEach((day, index) => {
+        const dateCol = day[columnIndexDate - 1];
+        const userCol = day[columnIndexUser - 1];
+
+        // omit empty rows
+        if (day[0] === '') {
+          return;
+        }
+
+        // omit trailing comments
+        if ((index === 0) && (typeof dateCol === 'object')) {
+          if (GscUtils.isDate(dateCol.toString())) {
+            const dd = dateCol.getDate().toString().padStart(2, '0');
+            const mm = (dateCol.getMonth() + 1).toString().padStart(2, '0');
+            const yyyy = dateCol.getFullYear();
+
+            weekStartDate = `${yyyy}/${mm}/${dd}`;
+          }
+        } else {
+          userDays.push(userCol);
+        }
       });
+
+      if (weekStartDate !== null) {
+        userWeeks[weekStartDate] = userDays;
+      }
     });
+
+    console.log(userWeeks);
 
     return true;
   }
