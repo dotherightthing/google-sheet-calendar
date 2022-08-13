@@ -24,7 +24,7 @@ const appConfig = {
     ],
     [
       'magenta', {
-        definition: 'Internal usage',
+        definition: 'COVID',
         hex: [ '#ff00ff' ],
       },
     ],
@@ -36,7 +36,7 @@ const appConfig = {
     ],
     [
       'purple', {
-        definition: 'Internal usage',
+        definition: 'Sick',
         hex: [ '#9900ff' ],
       },
     ],
