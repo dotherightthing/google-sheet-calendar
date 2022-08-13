@@ -107,6 +107,7 @@ setCacheItem
 
 * [GscCalendar](#GscCalendar)
     * [new GscCalendar(config)](#new_GscCalendar_new)
+    * [.getWeeks(sheetName)](#GscCalendar.getWeeks) ⇒ <code>Array</code>
     * [.devApp()](#GscCalendar.devApp) ⇒ <code>boolean</code>
 
 <a name="new_GscCalendar_new"></a>
@@ -116,6 +117,19 @@ setCacheItem
 | Param | Type | Description |
 | --- | --- | --- |
 | config | <code>object</code> | Module configuration. |
+
+<a name="GscCalendar.getWeeks"></a>
+
+### GscCalendar.getWeeks(sheetName) ⇒ <code>Array</code>
+getWeeks
+
+**Kind**: static method of [<code>GscCalendar</code>](#GscCalendar)  
+**Summary**: Get an array of weeks  
+**Returns**: <code>Array</code> - weeks Array of weeks, each week containing an array of days  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sheetName | <code>string</code> | Sheet name |
 
 <a name="GscCalendar.devApp"></a>
 

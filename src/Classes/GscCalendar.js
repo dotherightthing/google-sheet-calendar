@@ -29,13 +29,21 @@ class GscCalendar {
 
   /* Methods */
 
-  static getWeeks() {
+  /**
+   * getWeeks
+   *
+   * @summary Get an array of weeks
+   * @static
+   * @memberof GscCalendar
+   * @param {string} sheetName Sheet name
+   * @returns {Array} weeks Array of weeks, each week containing an array of days
+   */
+  static getWeeks(sheetName) {
     const {
       rowsAfterWeek,
       rowsInWeek,
     } = gscAppInstance.settings;
 
-    const sheetName = GscSheet.getSheetName();
     const columnIndexDate = GscSheet.getColumnIndexDate(sheetName);
     const columnIndexUser = GscSheet.getColumnIndexUser(sheetName);
     const rowIndexFirst = GscSheet.getRowIndexFirst(sheetName);
@@ -89,8 +97,7 @@ class GscCalendar {
     const sheetName = GscSheet.getSheetName();
     const columnIndexDate = GscSheet.getColumnIndexDate(sheetName);
     const columnIndexUser = GscSheet.getColumnIndexUser(sheetName);
-
-    const weeks = GscCalendar.getWeeks();
+    const weeks = GscCalendar.getWeeks(sheetName);
     const userWeeks = [];
 
     weeks.forEach((week) => {
